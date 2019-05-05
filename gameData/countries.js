@@ -1,15 +1,15 @@
 module.exports = [
   {
     country: 'england',
-    cities: ['London', 'Liverpool', 'Bristol', 'York']
+    cities: ['london', 'liverpool', 'bristol', 'york']
   },
   {
     country: 'china',
-    cities: ['Guangzhou', 'Shanghai', 'Beijing', 'Hong Kong']
+    cities: ['guangzhou', 'shanghai', 'beijing', 'hong kong']
   },
   {
     country: 'united states',
-    cities: ['New York', 'Los Angeles', 'Alabama', 'Minnesota', 'Seattle']
+    cities: ['new york', 'los angeles', 'alabama', 'minnesota', 'seattle']
   },
   // {
   //   country: '',
