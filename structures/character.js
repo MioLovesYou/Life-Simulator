@@ -1,6 +1,7 @@
 class Character {
   constructor(options) {
     this.name = options.name,
+    this.surname = options.surname,
     this.age = options.age || 1,
     this.money = options.money || 0,
     this.health = options.health || 50,
