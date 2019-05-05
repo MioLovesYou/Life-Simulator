@@ -1,47 +1,58 @@
 module.exports = [
   { 
     name: 'Jane',
-    gender: 'female'
+    gender: 'female',
+    country: [ 'england', 'united states' ]
   },
   {
     name: 'Joe',
-    gender: 'male'
+    gender: 'male',
+    country: [ 'england', 'united states' ]
   },
   {
     name: 'Alexandre',
-    gender: 'female'
+    gender: 'female',
+    country: [ 'england', 'united states' ]
   },
   {
     name: 'Alexander',
-    gender: 'male'
+    gender: 'male',
+    country: [ 'england', 'united states' ]
   },
   {
     name: 'Tyrone',
-    gender: 'male'
+    gender: 'male',
+    country: [ 'england', 'united states' ]
   },
   {
-    name: 'Jhon',
+    name: 'John',
     gender: 'male',
+    country: [ 'england', 'united states' ]
   },
   {
     name: "Emma",
-    female: "female"
+    female: "female",
+    country: [ 'england', 'united states' ]
   },
   {
     name: "Ava",
-    female: "female"
+    female: "female",
+    country: [ 'england', 'united states' ]
   },
   {
     name: "Jack",
-    female: "male"
+    female: "male",
+    country: [ 'england', 'united states' ]
   },
   {
     name: "Liam",
-    female: "male"
+    female: "male",
+    country: [ 'england', 'united states' ]
   },
   {
     name: "Lucas",
-    female: "male"
+    female: "male",
+    country: [ 'england', 'united states' ]
   },
   
 ]
