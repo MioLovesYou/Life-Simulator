@@ -11,7 +11,8 @@ class Character {
     this.location = options.location || 'london'
     this.intelligence = options.intelligence || 50
     this.gender = options.gender || 'male'
-    this.education = options.education || [] 
+    this.education = options.education || [],
+    this.job = options.job
   }
 } 
 

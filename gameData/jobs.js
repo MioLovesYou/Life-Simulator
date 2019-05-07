@@ -1,58 +1,72 @@
 module.exports = [
   {
-    title: 'Artist',
+    title: 'sr artist',
     minimumSalary: 5000,
     maximumSalary: 25000,
     requiredEducation: 'high school',
-    requiredExperience: undefined
+    requiredExperience: {
+      years: 3,
+      title: 'artist' 
+    },
+    promotion: 'sr artist'
   },
   {
-    title: 'Journalist',
+    title: 'artist',
+    minimumSalary: 5000,
+    maximumSalary: 25000,
+    requiredEducation: 'high school',
+    requiredExperience: undefined,
+    promotion: 'sr artist'
+  },
+  {
+    title: 'sr journalist',
+    minimumSalary: 32500,
+    maximumSalary: 45000,
+    requiredEducation: 'high school',
+    requiredExperience: {
+      years: 2,
+      title: 'journalist' 
+    },
+    promotion: undefined
+  },
+  {
+    title: 'journalist',
     minimumSalary: 15000,
     maximumSalary: 30000,
-    requiredEducation: 'english',
-    requiredExperience: undefined
+    requiredEducation: 'high school',
+    requiredExperience: undefined,
+    promotion: 'sr journalist'
   },
   {
-    title: 'Programmer',
+    title: 'sr programmer',
     minimumSalary: 20000,
-    maximumSalary: 50000,
-    requiredEducation: 'it', // I.T Informational Techn
+    maximumSalary: 45000,
+    requiredEducation: 'computer science',
     requiredExperience: {
       years: 5,
-      title: 'jr-programmer' // Understand the layout? yeh
-    }
-  }, 
-  {
-    title: 'Sr. Biologogist',
-    minimumSalary: 50000,
-    maximumSalary: 85099,
-    requiredEducation: 'Biology',
-    requiredExperience: {
-      years: 5,
-      title: 'sr-biologist'
-    }
+      title: 'programmer' 
+    },
+    promotion: undefined
   },
   {
-    title: 'Jr. Biologogist',
-    minimumSalary: 50000,
-    maximumSalary: 85099,
-    requiredEducation: 'Biology',
+    title: 'programmer',
+    minimumSalary: 20000,
+    maximumSalary: 45000,
+    requiredEducation: 'computer science',
     requiredExperience: {
-      years: 5,
-      title: 'jr-biologist'
-    }
+      years: 2,
+      title: 'jr programmer' 
+    },
+    promotion: 'sr programmer'
   },
   {
-    title: 'Sr. Biologogist',
-    minimumSalary: 50000,
-    maximumSalary: 85099,
-    requiredEducation: 'Biology',
-    requiredExperience: {
-      years: 5,
-      title: 'sr-biologist'
-    }
-  },
+   title: 'jr programmer',
+   minimumSalary: 10000,
+   maximumSalary: 20000,
+   requiredEducation: 'computer science',
+   requiredExperience: undefined,
+   promotion: 'programmer'
+ },
 //  {
 //    title: '',
 //    minimumSalary: ,
@@ -61,7 +75,8 @@ module.exports = [
 //    requiredExperience: {
 //      years: ,
 //      title: '' 
-//    }
+//    },
+//    promotion: ''
 //  },
   
 ]
