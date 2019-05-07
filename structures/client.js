@@ -15,6 +15,7 @@ class Foundation extends Discord.Client {
     this.eventHandler = new (require('./eventHandler'))(this);
     this.messageHandler = new (require('./messageHandler'))(this);
     this.utils = new (require(`../utilities/main.js`))(this);
+    this.lifecord = new (require(`../utilities/lifecord.js`))(this);
     this.Discord = Discord;
         
     // Data

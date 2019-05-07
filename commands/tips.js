@@ -11,7 +11,7 @@ class tips extends Command {
   }
     
   async exec(message) {
-    var tip = require(`../data/tips.js`)[Math.floor(Math.random() * require(`../data/tips.js`).length)];
+    const tip = require(`../data/tips.js`)[Math.floor(Math.random() * require(`../data/tips.js`).length)];
     message.channel.send(new this.client.Discord.MessageEmbed()
       .setTitle(`Friendly tip:`)
       .setDescription(`\`${tip}\``)
