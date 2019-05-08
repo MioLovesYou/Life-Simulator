@@ -31,28 +31,53 @@ module.exports = [
   },
   {
     name: "Emma",
-    female: "female",
+    gender: "female",
     country: [ 'england', 'united states' ]
   },
   {
     name: "Ava",
-    female: "female",
+    gender: "female",
     country: [ 'england', 'united states' ]
   },
   {
     name: "Jack",
-    female: "male",
+    gender: "male",
     country: [ 'england', 'united states' ]
   },
   {
     name: "Liam",
-    female: "male",
+    gender: "male",
     country: [ 'england', 'united states' ]
   },
   {
     name: "Lucas",
-    female: "male",
+    gender: "male",
     country: [ 'england', 'united states' ]
+  },
+  {
+    name: "Lucas",
+    gender: "male",
+    country: [ 'england', 'united states' ]
+  },
+  {
+    name: "Lucas",
+    gender: "male",
+    country: [ 'england', 'united states' ]
+  },
+  {
+    name: 'Chang', 
+    gender: 'male',
+    country: [ 'china' ]
+  },
+  {
+    name: 'Chao', 
+    gender: 'male',
+    country: [ 'china' ]
+  },
+  {
+    name: 'Chen', 
+    gender: 'female',
+    country: [ 'china' ]
   },
   
 ]
