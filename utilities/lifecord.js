@@ -79,13 +79,15 @@ class utils {
   }
   
   
-  feedCreation(client, message, family) {
-    var currentText = `Your mother, aged ${family.parents.mother.age}, has given birth to you!\nIt's a **${family.me.gender}**! Your father, ${family.parents.father.name}, is ${[]}`
-    message.channel.send(new client.Discord.MessageEmbed()
+  async feedCreation(client, message, family) {
+    var currentText = [`Your mother, aged ${family.parents.mother.age}, has given birth to you!\nIt's a **${family.me.gender}**! Your father, ${family.parents.father.name}, is ${client.utils.randomArrayItem(client.emotions).toLowerCase()}!`];
+    var m = await message.channel.send(new client.Discord.MessageEmbed()
       .setTitle(family.me.name.concat('\'s life'))
-      .setDescription()                 
-                        
-    )
+      .setDescription(currentText.join('\n'))                
+      .setColor(client.color)
+      .setImage('https://cdn.glitch.com/ae64189d-c1d4-43f3-b0ef-13ee461166b7%2Fhgr.png?1557263365750')
+    );
+    m.react('➕');
   }
   
   
