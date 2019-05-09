@@ -71,7 +71,8 @@ class utils {
           intelligence: client.utils.getRandom(40, 95),
           gender: gender,
           education: [],
-          job: undefined
+          job: undefined,
+          jobsList: undefined
         });
       }
     }
@@ -80,20 +81,88 @@ class utils {
   
   
   async feedCreation(client, message, family) {
-    var currentText = [`Your mother, aged ${family.parents.mother.age}, has given birth to you!\nIt's a **${family.me.gender}**! Your father, ${family.parents.father.name}, is ${client.utils.randomArrayItem(client.emotions).toLowerCase()}!`];
+    var options = {
+      title: family.me.name.concat('\'s life'),
+      currentText: [`Your mother, aged ${family.parents.mother.age}, has given birth to you!\nIt's a **${family.me.gender}**! Your father, ${family.parents.father.name}, is ${client.utils.randomArrayItem(client.emotions).toLowerCase()}!`],
+      color: client.color,
+      images: {
+        primary: 'https://cdn.glitch.com/ae64189d-c1d4-43f3-b0ef-13ee461166b7%2Fhgr.png?1557358552279'
+      },
+      image: 'https://cdn.glitch.com/ae64189d-c1d4-43f3-b0ef-13ee461166b7%2Fhgr.png?1557358552279',
+      reactions: [
+        {
+          name: 'plusAge',
+          reaction: '➕',
+          exec: function(client, message, family, options) {
+          
+          }
+        },
+        {
+          name: 'jobOrEducation',
+          reaction: '🏫',
+          exec: function(client, message, family, options) {
+            console.log(family.me.age);
+            if (family.me.age < 5) {
+              options.currentText.push(`You're only ${family.me.age}-years-old. Too young for school or a job.`);
+              client.lifecord.feedUpdate(client, message, options, family);
+            }
+          }
+        },
+        {
+          name: 'other',
+          reaction: '📚',
+          exec: function(client, message, family, options) {
+          }
+        }
+      ],
+      m: undefined,
+      
+    };
     var m = await message.channel.send(new client.Discord.MessageEmbed()
-      .setTitle(family.me.name.concat('\'s life'))
-      .setDescription(currentText.join('\n'))                
-      .setColor(client.color)
-      .setImage('https://cdn.glitch.com/ae64189d-c1d4-43f3-b0ef-13ee461166b7%2Fhgr.png?1557263365750')
+      .setTitle(options.title)
+      .setDescription(options.currentText.join('\n\n'))                
+      .setColor(options.color)
+      .setImage(options.image)
     );
-    m.react('➕');
+    options.m = m;
+    
+    const filters = {};
+    options.reactions.map(emoji => {
+      m.react(emoji.reaction);
+      filters[emoji.name] = m.createReactionCollector((reaction, user) => reaction.emoji.name === emoji.reaction && user.id === message.author.id, { time: 180000 });     
+      filters[emoji.name].on('collect', (reaction, user) => {
+        reaction.users.remove(user).catch(() => {});
+        options.reactions.filter(i => i.name === emoji.name)[0].exec(client, message, family, options);
+      });
+    }); 
   }
   
   
-  feedUpdate() {
+  feedUpdate(client, message, options, family) {
+    options.currentText = options.currentText.length > 6 ? options.currentText.splice(2, 6) : options.currentText; 
+    options.m.edit(new client.Discord.MessageEmbed()
+      .setTitle(options.title)
+      .setDescription(options.currentText.join('\n\n'))                
+      .setColor(options.color)
+      .setImage(options.image)              
+    );
+    
+    const filters = {};
+    options.reactions.map(emoji => {
+      options.m.react(emoji.reaction);
+      filters[emoji.name] = options.m.createReactionCollector((reaction, user) => reaction.emoji.name === emoji.reaction && user.id === message.author.id, { time: 180000 });     
+      filters[emoji.name].on('collect', (reaction, user) => {
+        reaction.users.remove(user).catch(() => {});
+        options.reactions.filter(i => i.name === emoji.name)[0].exec(client, message, family, options);
+      });
+    }); 
+  }
+  
+  feedDelete(client, message, options) {
   
   }
+  
+  
 }
 
 module.exports = utils;

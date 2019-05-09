@@ -1,6 +1,6 @@
 module.exports = [
   {
-    name: 'Flu',
+    name: 'flu',
     effect: {
       intelligence: 0,
       health: -6,
@@ -14,7 +14,7 @@ module.exports = [
     }
   },
   { 
-    name: 'Fever',
+    name: 'fever',
     effect: {
       intelligence: 0,
       health: -2,
@@ -28,7 +28,7 @@ module.exports = [
     }
   },
   { 
-    name: 'Depression',
+    name: 'depression',
     effect: {
       intelligence: -5,
       health: 0,
