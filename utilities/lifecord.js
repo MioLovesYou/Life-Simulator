@@ -67,7 +67,7 @@ class utils {
           looks:  client.utils.getRandom(5, 100),
           happiness: client.utils.getRandom(10, 95),
           origin: parents.father.location,
-          location: parents.father.location,
+          location: client.countries.filter(i => i.country === parents.father.location)[0],
           intelligence: client.utils.getRandom(40, 95),
           gender: gender,
           education: [],
@@ -88,8 +88,8 @@ class utils {
       [
         { 
           page: 'primary',
-          title: `${family.me.name}'s life`,
           image: 'https://cdn.glitch.com/ae64189d-c1d4-43f3-b0ef-13ee461166b7%2Fhgr.png?1557358552279',
+          title: `${family.me.location.flag}   ${family.me.name} ${family.me.surname}\'s life.`,
           reactions: [
             {
               name: 'plusAge',
@@ -98,20 +98,21 @@ class utils {
                 family.me.age += 1;
                 options.currentText.push(`You're now ${family.me.age}`);
                 
-                // Join school
-                client.education.map(i => {
-                  if (i.startingAge === family.meage) {
-                    options.currentText.push(`You're now enrolled in ${i.title}!`);
-                    family.me.currentEducation = i.title;
-                  }
-                });
-                
                 // Leave school
                 client.education.map(i => {
                   if (i.endingAge === family.me.age) {
                     options.currentText.push(`You've completed ${i.title}!`);
                     family.me.education.push(i.title);
                     family.me.currentEducation = undefined;
+                  }
+                });
+                
+                
+                // Join school
+                client.education.map(i => {
+                  if (i.startingAge === family.me.age) {
+                    options.currentText.push(`You're now enrolled in ${i.title}!`);
+                    family.me.currentEducation = i.title;
                   }
                 });
                 
@@ -163,8 +164,9 @@ class utils {
       filters: {}
     };
     var page = options.pages.filter(i => i.page === options.currentPage)[0];
+    console.log(page)
     var m = await message.channel.send(new client.Discord.MessageEmbed()
-      .setTitle(options.title)
+      .setTitle(page.title)
       .setDescription(options.currentText.join('\n\n'))                
       .setColor(options.color)
       .setImage(page.image)
@@ -174,7 +176,6 @@ class utils {
     
     page.reactions.map(emoji => {
       options.m.react(emoji.reaction);
-      console.log(options.filters);
       options.filters[emoji.name] = options.m.createReactionCollector((reaction, user) => reaction.emoji.name === emoji.reaction, { time: 180000 });     
       options.filters[emoji.name].on('collect', (reaction, user) => {
         if (user.id !== message.author.id) return;
