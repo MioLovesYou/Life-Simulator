@@ -15,8 +15,8 @@ module.exports = [
   },
   {
     title: 'middle school',
-    startingAge: 10,
-    endingAge: 14,
+    startingAge: 11,
+    endingAge: 15,
     costMin: undefined,
     costMax: undefined,
     options: undefined,
@@ -29,8 +29,8 @@ module.exports = [
   },
   {
     title: 'high school',
-    startingAge: 14,
-    endingAge: 18,
+    startingAge: 16,
+    endingAge: 19,
     costMin: undefined,
     costMax: undefined,
     options: undefined,
@@ -43,8 +43,8 @@ module.exports = [
   },
   {
     title: 'college',
-    startingAge: 18,
-    endingAge: 21,
+    startingAge: 20,
+    endingAge: 23,
     costMin: 10000,
     costMax: 45000,
     options: [
