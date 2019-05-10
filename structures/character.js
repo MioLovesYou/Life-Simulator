@@ -12,7 +12,9 @@ class Character {
     this.intelligence = options.intelligence || 50
     this.gender = options.gender || 'male'
     this.education = options.education || [],
+    this.currentEducation = options.currentEducation,
     this.job = options.job,
+    this.jobList = options.jobList,
     this.relation = 50
   }
 } 

@@ -71,6 +71,7 @@ class utils {
           intelligence: client.utils.getRandom(40, 95),
           gender: gender,
           education: [],
+          currentEducation: undefined,
           job: undefined,
           jobsList: undefined
         });
@@ -79,60 +80,106 @@ class utils {
     client.lifecord.feedCreation(client, message, Object.assign({me: new Me(client), parents: parents}))
   }
   
-  
   async feedCreation(client, message, family) {
     var options = {
-      title: family.me.name.concat('\'s life'),
       currentText: [`Your mother, aged ${family.parents.mother.age}, has given birth to you!\nIt's a **${family.me.gender}**! Your father, ${family.parents.father.name}, is ${client.utils.randomArrayItem(client.emotions).toLowerCase()}!`],
       color: client.color,
-      images: {
-        primary: 'https://cdn.glitch.com/ae64189d-c1d4-43f3-b0ef-13ee461166b7%2Fhgr.png?1557358552279'
-      },
-      image: 'https://cdn.glitch.com/ae64189d-c1d4-43f3-b0ef-13ee461166b7%2Fhgr.png?1557358552279',
-      reactions: [
-        {
-          name: 'plusAge',
-          reaction: '➕',
-          exec: function(client, message, family, options) {
-          
-          }
+      pages: 
+      [
+        { 
+          page: 'primary',
+          title: `${family.me.name}'s life`,
+          image: 'https://cdn.glitch.com/ae64189d-c1d4-43f3-b0ef-13ee461166b7%2Fhgr.png?1557358552279',
+          reactions: [
+            {
+              name: 'plusAge',
+              reaction: '➕',
+              exec: function(client, message, family, options) {
+                family.me.age += 1;
+                options.currentText.push(`You're now ${family.me.age}`);
+                
+                // Join school
+                client.education.map(i => {
+                  if (i.startingAge === family.meage) {
+                    options.currentText.push(`You're now enrolled in ${i.title}!`);
+                    family.me.currentEducation = i.title;
+                  }
+                });
+                
+                // Leave school
+                client.education.map(i => {
+                  if (i.endingAge === family.me.age) {
+                    options.currentText.push(`You've completed ${i.title}!`);
+                    family.me.education.push(i.title);
+                    family.me.currentEducation = undefined;
+                  }
+                });
+                
+                // Updating feed
+                client.lifecord.feedUpdate(client, message, options, family);
+              }
+            },
+            {
+              name: 'jobOrEducation',
+              reaction: '🏫',
+              exec: function(client, message, family, options) {
+                if (family.me.age < 5) {
+                  options.currentText.push(`You're only ${family.me.age}-year${family.me.age > 1 ? 's' : ''}-old. Too young for school or a job.`);
+                  client.lifecord.feedUpdate(client, message, options, family);
+                }
+                if (family.me.currentEducation) {
+                  options.currentPage = 'education';
+                  options.currentText.push(`You're currently in ${family.me.currentEducation}`);
+                  client.lifecord.feedUpdate(client, message, options, family);
+                }
+              }
+            },
+            {
+              name: 'other',
+              reaction: '📚',
+              exec: function(client, message, family, options) {
+              }
+            },
+          ],
+          previous: undefined
         },
-        {
-          name: 'jobOrEducation',
-          reaction: '🏫',
-          exec: function(client, message, family, options) {
-            console.log(family.me.age);
-            if (family.me.age < 5) {
-              options.currentText.push(`You're only ${family.me.age}-years-old. Too young for school or a job.`);
-              client.lifecord.feedUpdate(client, message, options, family);
-            }
-          }
-        },
-        {
-          name: 'other',
-          reaction: '📚',
-          exec: function(client, message, family, options) {
-          }
+        { 
+          page: 'education',
+          title: `${family.me.name}'s education`,
+          image: undefined,
+          reactions: [
+            {
+              name: 'studyHarder',
+              reaction: '📖',
+              exec: function(client, message, family, options) {
+              }
+            },
+          ],
+          previous: 'primary'
         }
       ],
+      currentPage: 'primary',
       m: undefined,
-      
+      filters: {}
     };
+    var page = options.pages.filter(i => i.page === options.currentPage)[0];
     var m = await message.channel.send(new client.Discord.MessageEmbed()
       .setTitle(options.title)
       .setDescription(options.currentText.join('\n\n'))                
       .setColor(options.color)
-      .setImage(options.image)
+      .setImage(page.image)
     );
+    
     options.m = m;
     
-    const filters = {};
-    options.reactions.map(emoji => {
-      m.react(emoji.reaction);
-      filters[emoji.name] = m.createReactionCollector((reaction, user) => reaction.emoji.name === emoji.reaction && user.id === message.author.id, { time: 180000 });     
-      filters[emoji.name].on('collect', (reaction, user) => {
+    page.reactions.map(emoji => {
+      options.m.react(emoji.reaction);
+      console.log(options.filters);
+      options.filters[emoji.name] = options.m.createReactionCollector((reaction, user) => reaction.emoji.name === emoji.reaction, { time: 180000 });     
+      options.filters[emoji.name].on('collect', (reaction, user) => {
+        if (user.id !== message.author.id) return;
         reaction.users.remove(user).catch(() => {});
-        options.reactions.filter(i => i.name === emoji.name)[0].exec(client, message, family, options);
+        page.reactions.filter(i => i.name === emoji.name)[0].exec(client, message, family, options);
       });
     }); 
   }
@@ -140,21 +187,25 @@ class utils {
   
   feedUpdate(client, message, options, family) {
     options.currentText = options.currentText.length > 6 ? options.currentText.splice(2, 6) : options.currentText; 
+    var page = options.pages.filter(i => i.page === options.currentPage)[0];
     options.m.edit(new client.Discord.MessageEmbed()
       .setTitle(options.title)
       .setDescription(options.currentText.join('\n\n'))                
       .setColor(options.color)
-      .setImage(options.image)              
+      .setImage(page.image)
     );
     
-    const filters = {};
-    options.reactions.map(emoji => {
-      options.m.react(emoji.reaction);
-      filters[emoji.name] = options.m.createReactionCollector((reaction, user) => reaction.emoji.name === emoji.reaction && user.id === message.author.id, { time: 180000 });     
-      filters[emoji.name].on('collect', (reaction, user) => {
-        reaction.users.remove(user).catch(() => {});
-        options.reactions.filter(i => i.name === emoji.name)[0].exec(client, message, family, options);
-      });
+    
+    page.reactions.map(emoji => {
+      if (!options.filters[emoji.name]) {
+        options.m.react(emoji.reaction);
+        options.filters[emoji.name] = options.m.createReactionCollector((reaction, user) => reaction.emoji.name === emoji.reaction, { time: 180000 });     
+        options.filters[emoji.name].on('collect', (reaction, user) => {
+          if (user.id !== message.author.id) return;
+          reaction.users.remove(user).catch(() => {});
+          page.reactions.filter(i => i.name === emoji.name)[0].exec(client, message, family, options);
+        });
+      }
     }); 
   }
   
@@ -162,6 +213,9 @@ class utils {
   
   }
   
+  feedChangePage(client, message, options, family) {
+    
+  }
   
 }
 
