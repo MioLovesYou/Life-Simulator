@@ -28,7 +28,7 @@
     "isomorphic-fetch": "^2.2.1",
     "moment": "^2.24.0",
     "moment-duration-format": "^2.2.2",
-    "node-fetch": "^2.5.0",
+    "node-fetch": "^2.6.1",
     "os": "^0.1.1",
     "parse-ms": "^2.1.0",
     "passport": "^0.4.0",
